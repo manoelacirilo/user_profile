@@ -1,3 +1,5 @@
+from datetime import date, datetime
+
 
 class User:
     counter = 0
@@ -37,7 +39,7 @@ class User:
         self.__passoword = new_password
 
     def get_address(self):
-        return self.__address
+        return self.__address.show_data()
 
     def set_address(self, new_address):
         self.__address = new_address
@@ -47,6 +49,24 @@ class User:
 
     def add_phone(self, new_phone):
         self.__phones.append(new_phone)
+
+    @staticmethod
+    def __show_phone_data(phone):
+        return phone.show_data()
+
+    def current_age(self):
+        born = datetime.strptime(self.__birthdate, "%Y-%m-%d")
+        today = date.today()
+        age = today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+        return f'{age} years'
+
+    def show_data(self):
+        user_data = f'Id: {self.get_id()}; Name: {self.get_name()}; Birthdate: {self.get_birthdate()}; ' \
+               f'Email: {self.get_email()}; Address: {self.get_address()}; Idade: {self.current_age()}; Telefones: '
+        user_phones = ''
+        for phone in self.__phones:
+            user_phones += User.__show_phone_data(phone) + ' '
+        return user_data + user_phones
 
 
 
